@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 import os
 
-
 def shannon_entropy(data):
     data = data.flatten()
     data = data[data > 0]
@@ -12,7 +11,7 @@ def shannon_entropy(data):
     return entropy
 
 
-def fireDetect(imgPath, video=False, entopyVal = 0):
+def fireDetect(imgPath, video=False, entopyVal = 14):
     area = 0
     cont_frame = 0
     imagem = cv2.imread(imgPath)
@@ -64,16 +63,18 @@ def fireDetect(imgPath, video=False, entopyVal = 0):
         cv2.drawContours(desenho, contornos_conectados, -1, color, 1, 8, hierarchy, 0)
         cv2.drawContours(imagem, contornos_conectados, -1, color, 1, 8, hierarchy, 0)
 
-        # Garantir que a área é maior que é 0
-        # if aux_area > 0:
-        #     print(f"Fogo detectado no frame {cont_frame}, o maior fogo possui uma área igual a "
-        #           f"{aux_area}, com centróide localizado nas coordenadas ({cx}, {cy})")
-        #
-        # else:
-        #     print("No frame", cont_frame, ", nenhum raio foi detectado.")
+        # if entropy < 14:
+        #     return entropy
+
+        if aux_area > 0:
+            print(f"Fogo detectado no frame {cont_frame}, o maior fogo possui uma área igual a {aux_area}")
+            return True
+        else:
+            print("No frame", cont_frame, ", nenhum fogo foi detectado.")
+            return False
 
     cv2.imshow("Video", mascaraFumaca)
-    # cv2.imshow("Teste", desenho)
+    cv2.imshow("Teste", desenho)
     cv2.imshow("HSV", imgHSV)
     cv2.imshow("Video2", imagem)
     cv2.waitKey(0)
@@ -82,7 +83,7 @@ def fireDetect(imgPath, video=False, entopyVal = 0):
     cv2.destroyAllWindows()
 
 
-# fireDetect("images/queimada/queimada4.jpg")
+# fireDetect("images/queimada/1queimada4.jpg")
 # fireDetect("images/queimada/PublicDataset01329.jpg")
 
 # for i in range(10, 255, 10):
@@ -93,5 +94,13 @@ def fireDetect(imgPath, video=False, entopyVal = 0):
     # fireDetect("images/queimada/PublicDataset01329.jpg", entopyVal=0)
 
 
-for img in os.listdir("images/queimada"):
-    fireDetect(f"images/queimada/{img}")
+contFogo = 0
+contNatural = 0
+
+for img in os.listdir("images/treinamento/NormalImages"):
+    # entropy = fireDetect(f"images/treinamento/NormalImages/{img}")
+    if fireDetect(f"images/treinamento/NormalImages/{img}"):
+        contFogo+=1
+    else:
+        contNatural+=1
+    print(f"Foram dedectados {contFogo} imagens com fogo e {contNatural} imagens naturais")
