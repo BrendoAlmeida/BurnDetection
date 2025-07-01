@@ -1,1 +1,0 @@
-{"ultimo_caminho_imagem": "Frames2Treinamento/Fire/frame_00000.jpg", "ultimo_indice_contorno": 9}
