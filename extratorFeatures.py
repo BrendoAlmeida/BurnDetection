@@ -7,8 +7,8 @@ def extrair_contornos(img, paletaFogo = False, AreaMin = 100):
         return None, None
 
     # Faixas de cor
-    lowerFumaca = np.array([0, 0, 153])
-    upperFumaca = np.array([180, 55, 244])
+    lowerFumaca = np.array([0, 0, 120])
+    upperFumaca = np.array([110, 54, 255])
     lowerCentroFogo = np.array([0, 135, 115])
     upperCentroFogo = np.array([13, 255, 255])
 
